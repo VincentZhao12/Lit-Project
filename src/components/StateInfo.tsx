@@ -11,14 +11,15 @@ const StateInfo: FC<StateInfoProps> = ({ stateData }) => {
       <p>Black Population: {stateData.blackPeople}</p>
       <p>
         Percent of African Americans:{" "}
-        {Math.round((stateData.blackPeople / stateData.population) * 100)} %
+        {Math.round((stateData.blackPeople / stateData.population) * 100)}%
       </p>
       <p>Median Househoold Income: {"$" + stateData.medianHouseholdIncome}</p>
       <p>People in Poverty: {stateData.peopleInPoverty}</p>
       <p>
         Percent in Poverty:{" "}
-        {Math.round((stateData.peopleInPoverty / stateData.population) * 100)} %
+        {Math.round((stateData.peopleInPoverty / stateData.population) * 100)}%
       </p>
+      <p>Percent Uninsured: {Math.round(stateData.uninsured)}%</p>
     </div>
   );
 };

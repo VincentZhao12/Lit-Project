@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Map from "./components/Map";
+import Maps from "./components/Maps";
 import "./App.css";
 
 const App = () => {
@@ -28,12 +28,17 @@ const App = () => {
       const popRes = await fetch(
         "https://api.census.gov/data/2020/dec/pl?get=NAME,P1_001N,P1_004N&for=state:*"
       );
+      const healthRes = await fetch(
+        "https://api.census.gov/data/timeseries/healthins/sahie?get=PCTUI_PT,NAME&for=state:*&time=2017"
+      );
 
+      let healthTable = await healthRes.json();
       let popTable = await popRes.json();
       let povertyTable = await povRes.json();
 
       povertyTable = povertyTable.slice(1);
       popTable = popTable.slice(1);
+      healthTable = healthTable.slice(1);
       popTable.pop();
 
       let povertyData: {
@@ -61,6 +66,19 @@ const App = () => {
           state: FIPS_CODES[row[3]],
         });
       });
+
+      let healthData: {
+        uninsured: number;
+        state: any;
+      }[] = [];
+
+      healthTable.forEach((row: any[]) => {
+        healthData.push({
+          uninsured: row[0],
+          state: FIPS_CODES[row[3]],
+        });
+      });
+
       let stateData: {
         [key: string]: StateData;
       } = {};
@@ -73,8 +91,11 @@ const App = () => {
           medianHouseholdIncome: row.medianHouseholdIncome,
           population: popData[index].population,
           stateName: `${row.state}`,
+          uninsured: healthData[index].uninsured,
         };
       });
+
+      console.log(stateData);
 
       setStateData(stateData);
     })();
@@ -93,7 +114,7 @@ const App = () => {
       <h1>
         <i>Raisin in the Sun</i> Menu Project
       </h1>
-      <Map svg={svg} statesData={stateData} />
+      <Maps svg={svg} statesData={stateData} />
       <div
         style={{
           display: "flex",
@@ -103,7 +124,7 @@ const App = () => {
           marginTop: "5rem",
         }}
       >
-        <p style={{ width: "40%", lineHeight: "30px", fontSize: "18px" }}>
+        <p style={{ width: "50em", lineHeight: "30px", fontSize: "18px" }}>
           This is a heatmap of African Americans and poverty by state. The
           darker the color, of the heatmap, the more people are in African
           Americans in the first chart and the lower median household income in
@@ -133,10 +154,18 @@ const App = () => {
           talks about the fact that she continued to have to live in fear of
           being killed even after escaping the Southern lynching depicting how
           even though escaping to the North was good for African Americans, they
-          still had to live in fear of what white people might do to them.{" "}
-          <i>Raisin in the Sun</i> and these maps depict the extent to which
-          African Americans have been left in poverty with very little chance
-          for social mobility.
+          still had to live in fear of what white people might do to them.
+          Additionally, through the third chart, it can be seen that there is
+          some correlation between the amount of African Americans in each state
+          and the percentage of uninsured people in those states. This depicsts
+          how African Americans have continuously had difficulty acessing social
+          services. This is seen in <i>Raisin in the Sun</i> as Ruth fears that
+          having another child would result in negative consequences for her
+          family as she contemplates abortion fearing further financial stress
+          on her family as they don't have the same resources to support her
+          child as white families would. <i>Raisin in the Sun</i> and these maps
+          depict the extent to which African Americans have been left in poverty
+          with very little chance for social mobility.
         </p>
       </div>
     </div>
