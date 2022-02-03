@@ -6,7 +6,7 @@ interface StateInfoProps {
 
 const StateInfo: FC<StateInfoProps> = ({ stateData }) => {
   return (
-    <div style={{ width: "15%" }}>
+    <div style={{ width: "20%" }} className="card">
       <h3>{stateData.stateName}</h3>
       <p>Black Population: {stateData.blackPeople}</p>
       <p>

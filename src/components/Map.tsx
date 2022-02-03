@@ -43,94 +43,103 @@ const Map: React.FC<MapProps> = ({ statesData, svg }) => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
+          marginRight: "2%",
         }}
       >
-        <h3>Heatmap of African Americans by State</h3>
-        <svg style={{ width: 600 }} viewBox="0 0 960 600">
-          {svg.map(
-            (
-              path: { shape: string; id: string },
-              index: React.Key | null | undefined
-            ) => {
-              return (
-                <path
-                  style={{
-                    cursor: "pointer",
-                    fill: perc2color(
-                      ((0.5 -
-                        statesData[path.id]?.blackPeople /
-                          statesData[path.id].population) /
-                        0.8) *
-                        70
-                    ),
-                  }}
-                  key={index}
-                  stroke="#fff"
-                  strokeWidth="6px"
-                  d={path.shape}
-                  onMouseOver={(event: any) => {
-                    event.target.style.fill = "red";
-                    setSelected(statesData[path.id]);
-                  }}
-                  onMouseOut={(event: any) => {
-                    event.target.style.fill = perc2color(
-                      ((0.5 -
-                        statesData[path.id]?.blackPeople /
-                          statesData[path.id].population) /
-                        0.8) *
-                        70
-                    );
-                  }}
-                ></path>
-              );
-            }
-          )}
-        </svg>
-        <Legend low="Less African Americans" high="More African Americans" />
-        <h3>Heatmap of Median Household Income by State</h3>
-        <svg style={{ width: 600 }} viewBox="0 0 960 600">
-          {svg.map(
-            (
-              path: { shape: string; id: string },
-              index: React.Key | null | undefined
-            ) => {
-              return (
-                <path
-                  style={{
-                    cursor: "pointer",
-                    fill: perc2color(
-                      ((Number.parseInt(
-                        statesData[path.id]?.medianHouseholdIncome + ""
-                      ) -
-                        67340 / 2) /
-                        91957) *
-                        100
-                    ),
-                  }}
-                  key={index}
-                  stroke="#fff"
-                  strokeWidth="6px"
-                  d={path.shape}
-                  onMouseOver={(event: any) => {
-                    event.target.style.fill = "red";
-                    setSelected(statesData[path.id]);
-                  }}
-                  onMouseOut={(event: any) => {
-                    event.target.style.fill = perc2color(
-                      ((Number.parseInt(
-                        statesData[path.id]?.medianHouseholdIncome + ""
-                      ) -
-                        67340 / 2) /
-                        91957) *
-                        100
-                    );
-                  }}
-                ></path>
-              );
-            }
-          )}
-        </svg>
-        <Legend low="Greater household income" high="Lower household income" />
+        <div className="card">
+          <h3>Heatmap of African Americans by State</h3>
+          <svg style={{ width: 600 }} viewBox="0 0 960 600">
+            {svg.map(
+              (
+                path: { shape: string; id: string },
+                index: React.Key | null | undefined
+              ) => {
+                return (
+                  <path
+                    style={{
+                      cursor: "pointer",
+                      fill: perc2color(
+                        ((0.5 -
+                          statesData[path.id]?.blackPeople /
+                            statesData[path.id].population) /
+                          0.8) *
+                          70
+                      ),
+                    }}
+                    key={index}
+                    stroke="#fff"
+                    strokeWidth="6px"
+                    d={path.shape}
+                    onMouseOver={(event: any) => {
+                      event.target.style.fill = "blue";
+                      setSelected(statesData[path.id]);
+                    }}
+                    onMouseOut={(event: any) => {
+                      event.target.style.fill = perc2color(
+                        ((0.5 -
+                          statesData[path.id]?.blackPeople /
+                            statesData[path.id].population) /
+                          0.8) *
+                          70
+                      );
+                    }}
+                  ></path>
+                );
+              }
+            )}
+          </svg>
+          <Legend low="Less African Americans" high="More African Americans" />
+        </div>
+
+        <div className="card">
+          <h3>Heatmap of Median Household Income by State</h3>
+          <svg style={{ width: 600 }} viewBox="0 0 960 600">
+            {svg.map(
+              (
+                path: { shape: string; id: string },
+                index: React.Key | null | undefined
+              ) => {
+                return (
+                  <path
+                    style={{
+                      cursor: "pointer",
+                      fill: perc2color(
+                        ((Number.parseInt(
+                          statesData[path.id]?.medianHouseholdIncome + ""
+                        ) -
+                          67340 / 2) /
+                          91957) *
+                          100
+                      ),
+                    }}
+                    key={index}
+                    stroke="#fff"
+                    strokeWidth="6px"
+                    d={path.shape}
+                    onMouseOver={(event: any) => {
+                      event.target.style.fill = "blue";
+                      setSelected(statesData[path.id]);
+                    }}
+                    onMouseOut={(event: any) => {
+                      event.target.style.fill = perc2color(
+                        ((Number.parseInt(
+                          statesData[path.id]?.medianHouseholdIncome + ""
+                        ) -
+                          67340 / 2) /
+                          91957) *
+                          100
+                      );
+                    }}
+                  ></path>
+                );
+              }
+            )}
+          </svg>
+          <Legend
+            low="Greater household income"
+            high="Lower household income"
+          />
+        </div>
       </div>
       {selected && <StateInfo stateData={selected} />}
     </div>
